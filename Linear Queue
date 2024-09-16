@@ -1,0 +1,107 @@
+// Linear Queue in C.
+
+#include <stdio.h>
+#define SIZE 5
+
+struct LinearQueue {
+    int items[SIZE];
+    int front, rear;
+};
+
+void initQueue(struct LinearQueue* q) {
+    q->front = -1;
+    q->rear = -1;
+}
+
+int isFull(struct LinearQueue* q) {
+    return (q->rear == SIZE - 1);
+}
+
+int isEmpty(struct LinearQueue* q) {
+    return (q->front == -1 || q->front > q->rear);
+}
+
+void enqueue(struct LinearQueue* q, int value) {
+    if (isFull(q)) {
+        printf("Queue is full\n");
+        return;
+    }
+
+    if (isEmpty(q)) {
+        q->front = 0;
+    }
+
+    q->rear++;
+    q->items[q->rear] = value;
+    printf("Inserted %d\n", value);
+}
+
+int dequeue(struct LinearQueue* q) {
+    if (isEmpty(q)) {
+        printf("Queue is empty\n");
+        return -1;
+    }
+
+    int data = q->items[q->front];
+    q->front++;
+
+    if (q->front > q->rear) {  // Reset queue when empty
+        q->front = q->rear = -1;
+    }
+
+    return data;
+}
+
+void display(struct LinearQueue* q) {
+    if (isEmpty(q)) {
+        printf("Queue is empty\n");
+        return;
+    }
+
+    printf("Queue elements are: ");
+    for (int i = q->front; i <= q->rear; i++) {
+        printf("%d ", q->items[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+    struct LinearQueue q;
+    initQueue(&q);
+    
+    int choice, value;
+
+    do {
+        printf("\nMenu:\n");
+        printf("1. Enqueue\n");
+        printf("2. Dequeue\n");
+        printf("3. Display\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter value to enqueue: ");
+                scanf("%d", &value);
+                enqueue(&q, value);
+                break;
+            case 2:
+                value = dequeue(&q);
+                if (value != -1) {
+                    printf("Dequeued: %d\n", value);
+                }
+                break;
+            case 3:
+                display(&q);
+                break;
+            case 4:
+                printf("Exiting...\n");
+                break;
+            default:
+                printf("Invalid choice, please try again.\n");
+        }
+    } while (choice != 4);
+
+    return 0;
+}
