@@ -1,0 +1,109 @@
+// Circular Queue in C.
+
+#include <stdio.h>
+#define SIZE 5
+
+struct CircularQueue {
+    int items[SIZE];
+    int front, rear;
+};
+
+void initQueue(struct CircularQueue* q) {
+    q->front = -1;
+    q->rear = -1;
+}
+
+int isFull(struct CircularQueue* q) {
+    return (q->front == (q->rear + 1) % SIZE);
+}
+
+int isEmpty(struct CircularQueue* q) {
+    return (q->front == -1);
+}
+
+void enqueue(struct CircularQueue* q, int value) {
+    if (isFull(q)) {
+        printf("Queue is full\n");
+        return;
+    }
+
+    if (isEmpty(q)) {
+        q->front = 0;
+    }
+
+    q->rear = (q->rear + 1) % SIZE;
+    q->items[q->rear] = value;
+    printf("Inserted %d\n", value);
+}
+
+int dequeue(struct CircularQueue* q) {
+    if (isEmpty(q)) {
+        printf("Queue is empty\n");
+        return -1;
+    }
+
+    int data = q->items[q->front];
+    if (q->front == q->rear) {
+        q->front = q->rear = -1;
+    } else {
+        q->front = (q->front + 1) % SIZE;
+    }
+
+    return data;
+}
+
+void display(struct CircularQueue* q) {
+    if (isEmpty(q)) {
+        printf("Queue is empty\n");
+        return;
+    }
+
+    printf("Queue elements are: ");
+    int i = q->front;
+    while (i != q->rear) {
+        printf("%d ", q->items[i]);
+        i = (i + 1) % SIZE;
+    }
+    printf("%d\n", q->items[q->rear]);
+}
+
+int main() {
+    struct CircularQueue q;
+    initQueue(&q);
+    
+    int choice, value;
+
+    do {
+        printf("\nMenu:\n");
+        printf("1. Enqueue\n");
+        printf("2. Dequeue\n");
+        printf("3. Display\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter value to enqueue: ");
+                scanf("%d", &value);
+                enqueue(&q, value);
+                break;
+            case 2:
+                value = dequeue(&q);
+                if (value != -1) {
+                    printf("Dequeued: %d\n", value);
+                }
+                break;
+            case 3:
+                display(&q);
+                break;
+            case 4:
+                printf("Exiting...\n");
+                break;
+            default:
+                printf("Invalid choice, please try again.\n");
+        }
+    } while (choice != 4);
+
+    return 0;
+}
