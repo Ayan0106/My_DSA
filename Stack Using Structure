@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include<stdlib.h>
+#define MAX 5
+
+struct stack{
+int top;
+int stack[MAX];
+};
+struct stack st;
+
+void push(struct stack *st,int x){
+    
+    if(st->top==MAX-1){
+        printf("Stack overflow");
+    }
+    else{
+        st->stack[++(st->top)]=x;
+    }
+}
+
+void pop(struct stack *st){
+    
+    int y;
+    if(st->top==-1){
+        printf("Stack underflow");
+    }
+    else{
+        y=st->stack[(st->top)--];
+    
+    }
+}
+
+void display(struct stack *st){
+    int i;
+    if(st->top==-1){
+        printf("Stack is empty.");
+    }
+    else{
+        for(int i=st->top;i>=0;i--){
+            printf("%d ",st->stack[i]);
+            
+        }
+    }
+}
+
+int main() {
+    int ch,x;
+    st.top=-1;
+    while(1){
+        printf("\nEnter 1 for push elements:\n");
+        printf("Enter 2 for pop elements:\n");
+        printf("Enter 3 for display elements:\n");
+        printf("Enter 4 for exit :\n");
+        printf("Enteryour choice:\n");
+        scanf("%d",&ch);
+        switch(ch){
+        case 1: 
+                printf("Enter elements:\n ");
+                scanf("%d",&x);
+                push(&st,x);
+            
+                break;
+        case 2: pop(&st);
+                break;
+        case 3: display(&st);
+                break;
+        case 4: exit(0);
+                break;
+        }        
+                
+    }
+        
+    return 0;
+}
